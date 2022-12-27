@@ -1,0 +1,3 @@
+rootProject.name = 'spring-MSA'
+include 'spring-cloud:discovery-service'
+

@@ -1,0 +1,12 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: discovery-service
+
+# 자기 자신은 유레카 서버에 등록 X -> 자기 자신이 유레카 서버이기 때문에
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
