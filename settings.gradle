@@ -1,3 +1,4 @@
 rootProject.name = 'spring-MSA'
 include 'spring-cloud:discovery-service'
+include 'microservices:user-service'
 

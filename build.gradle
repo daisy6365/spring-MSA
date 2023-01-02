@@ -53,11 +53,11 @@ subprojects {
         useJUnitPlatform()
     }
 
-//    project(':microservices') {
-//        bootJar {
-//            enabled = false
-//        }
-//    }
+    project(':microservices') {
+        bootJar {
+            enabled = false
+        }
+    }
 
     project(':spring-cloud') {
         bootJar {
