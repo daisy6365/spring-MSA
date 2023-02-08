@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 0 # random port를 사용한다는 의미 -> port의 충돌 X
 
 spring:
   application:
@@ -10,6 +10,6 @@ eureka:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}
   client:
     register-with-eureka: true # 유레카 등록
-    fetch-registry: true # 외부에서 검색 가능
+    fetch-registry: true # 외부에서 검색 가능 -> eureka 서버로부터 인스턴스의 정보를 주기적으로 가져올것인지 설정
     service-url: #유레카 서버의 위치
       defaultZone: http://127.0.0.1:8761/eureka
