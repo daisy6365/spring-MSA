@@ -4,6 +4,14 @@ server:
 spring:
   application:
     name: user-service
+  # H2 Database
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+
 
 eureka:
   instance:
@@ -13,3 +21,7 @@ eureka:
     fetch-registry: true # 외부에서 검색 가능 -> eureka 서버로부터 인스턴스의 정보를 주기적으로 가져올것인지 설정
     service-url: #유레카 서버의 위치
       defaultZone: http://127.0.0.1:8761/eureka
+
+#greeting체크 추가
+greeting:
+  message: Welcome to the Simple E-commerce.
