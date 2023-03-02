@@ -1,5 +1,6 @@
 package com.study.domain;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 

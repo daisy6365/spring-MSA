@@ -1,9 +1,8 @@
 package com.study.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import jakarta.validation.constraints.*;
 
 @Data
 public class RequestUser {
