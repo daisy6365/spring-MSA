@@ -1,0 +1,45 @@
+server:
+  port: 0 # random port? ????? ?? -> port? ?? X
+
+spring:
+  application:
+    name: catalog-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/msa-catalog?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&autoReconnect=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Seoul
+    username: root
+    password: root
+  jpa:
+    #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create-drop
+      #update -> ???????? #none -> ????(????)
+    properties:
+      hibernate:
+        default_batch_fetch_size: 500
+        #        show_sql: false
+        format_sql: true
+    open-in-view: false
+    show-sql: true
+    generate-ddl: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}
+  client:
+    register-with-eureka: true # ??? ??
+    fetch-registry: true # ???? ?? ?? -> eureka ????? ????? ??? ????? ?????? ??
+    service-url: #??? ??? ??
+      defaultZone: http://127.0.0.1:8761/eureka
+
+#greeting?? ??
+greeting:
+  message: Welcome to the Simple E-commerce.
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    com.study: debug

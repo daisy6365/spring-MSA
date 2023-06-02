@@ -17,6 +17,7 @@ public class WebSecurity {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeHttpRequests().requestMatchers("/user-service/**").permitAll();
+        http.authorizeHttpRequests().requestMatchers("/user-service/**").permitAll();
         http.headers().frameOptions().disable();
 
         return http.build();
