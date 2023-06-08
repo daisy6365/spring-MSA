@@ -2,8 +2,9 @@ package com.study.service;
 
 import com.study.domain.UserEntity;
 import com.study.dto.UserDto;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     UserDto createUser(UserDto userDto);
 
