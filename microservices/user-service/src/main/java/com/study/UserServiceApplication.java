@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-@EnableDiscoveryClient // 유레카 서버와 연결되는 클라이언트
+// Eureka 서버와 연결되는 Client
+// 자신의 위치 정보를 등록하고, 다른 서비스의 위치를 조회할 클라이언트에 선언
+@EnableDiscoveryClient
 public class UserServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserServiceApplication.class, args);
