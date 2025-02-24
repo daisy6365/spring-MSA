@@ -11,6 +11,9 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+/**
+ * 사용자 정의 필터를 통해 로깅 작업을 상세하게 적용 가능함
+ */
 @Slf4j
 @Component
 public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Config> {
@@ -40,6 +43,11 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
 //            }));
 //        });
 
+        /**
+         * OrderedGatewayFilter : GatewayFilter를 구현한 자식 클래스
+         * filter(ServerWebExchange exchange, GatewayFilterChain chain)
+         * Webflux 환경이기 때문에 Servlet이 아닌 SeverWebExchange가 매개변수
+         */
         GatewayFilter filter = new OrderedGatewayFilter((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
@@ -55,7 +63,9 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
                     log.info("Logging Post filter: response code -> {}", response.getStatusCode());
                 }
             }));
-        }, Ordered.LOWEST_PRECEDENCE); // 필터의 우선 순위를 변경 가능
+        }, Ordered.HIGHEST_PRECEDENCE); // 필터의 우선 순위를 변경 가능
+        // Ordered.LOWEST_PRECEDENCE : 가장 낮은 우선 순위
+        // Ordered.HIGHEST_PRECEDENCE : 가장 높은 우선 순위
 
         return filter;
     }

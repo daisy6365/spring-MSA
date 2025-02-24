@@ -34,6 +34,11 @@ spring:
 #            - AddRequestHeader=user-request, user-request-header
 #            - AddResponseHeader=user-reponse, user-response-header
             - CustomFilter
+            - name: LoggingFilter # 추가적인 파라미터가 존재 -> name 지정
+              args:
+                baseMessage: Hi, I'm your logging
+                preLogger: true
+                postLogger: true
 #        - id: user-service # User Service 포워드
 #          uri: lb://USER-SERVICE
 #          predicates: # 조건절. 사용자가 입력했던 PATH 정보에 따라 라우팅
