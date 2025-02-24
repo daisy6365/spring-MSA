@@ -29,9 +29,10 @@ spring:
           uri: lb://USER-SERVICE # 요청이 조건에 따라 "이동 예정인" 주소
           predicates:
             - Path=/user-service/**
-          filters: #
-            - AddRequestHeader=user-request, user-request-header
-            - AddResponseHeader=user-reponse, user-response-header
+          filters:
+#            - AddRequestHeader=user-request, user-request-header
+#            - AddResponseHeader=user-reponse, user-response-header
+            - CustomFilter
 #        - id: user-service # User Service 포워드
 #          uri: lb://USER-SERVICE
 #          predicates: # 조건절. 사용자가 입력했던 PATH 정보에 따라 라우팅
