@@ -18,12 +18,13 @@ spring:
 #    password: guest
   cloud:
     gateway:
-#      default-filters:
-#        - name: GlobalFilter
-#          args:
-#            baseMessage: Spring Cloud Gateway GlobalFilter
-#            preLogger: true
-#            postLogger: true
+      default-filters: # 공통 필터
+        - name: GlobalFilter
+          args:
+            # 전달 하고자 하는 파라미터 값
+            baseMessage: Spring Cloud Gateway GlobalFilter
+            preLogger: true
+            postLogger: true
       routes:
         - id: user-service # User Service 포워드
           uri: lb://USER-SERVICE # 요청이 조건에 따라 "이동 예정인" 주소
