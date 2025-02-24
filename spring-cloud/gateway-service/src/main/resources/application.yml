@@ -11,62 +11,65 @@ eureka:
 spring:
   application:
     name: gateway-service
-  rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: guest
-    password: guest
+#  rabbitmq:
+#    host: 127.0.0.1
+#    port: 5672
+#    username: guest
+#    password: guest
   cloud:
     gateway:
-      default-filters:
-        - name: GlobalFilter
-          args:
-            baseMessage: Spring Cloud Gateway GlobalFilter
-            preLogger: true
-            postLogger: true
+#      default-filters:
+#        - name: GlobalFilter
+#          args:
+#            baseMessage: Spring Cloud Gateway GlobalFilter
+#            preLogger: true
+#            postLogger: true
       routes:
+        - id: user-service # User Service 포워드
+          uri: lb://USER-SERVICE # 요청이 조건에 따라 "이동 예정인" 주소
+          predicates:
+            - Path=/user-service/**
+          filters: #
+            - AddRequestHeader=user-request, user-request-header
+            - AddResponseHeader=user-reponse, user-response-header
+#        - id: user-service # User Service 포워드
+#          uri: lb://USER-SERVICE
+#          predicates: # 조건절. 사용자가 입력했던 PATH 정보에 따라 라우팅
+#            - Path=/user-service/login
+#            - Method=POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#        - id: user-service # User Service 포워드
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/user-service/users
+#            - Method=POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#        - id: user-service # User Service 포워드
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/user-service/actuator/**
+#            - Method=GET,POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
 #        - id: user-service # User Service 포워드
 #          uri: lb://USER-SERVICE
 #          predicates:
 #            - Path=/user-service/**
-        - id: user-service # User Service 포워드
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/user-service/login
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service # User Service 포워드
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/user-service/users
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service # User Service 포워드
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/user-service/actuator/**
-            - Method=GET,POST
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service # User Service 포워드
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/user-service/**
-            - Method=GET
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-            - AutorizationHeaderFilter # 필터 처리
-        - id: catalog-service # Catalog Service 포워드
-          uri: lb://CATALOG-SERVICE
-          predicates:
-            - Path=/catalog-service/**
-        - id: order-service # Order Service 포워드
-          uri: lb://ORDER-SERVICE
-          predicates:
-            - Path=/order-service/**
+#            - Method=GET
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#            - AutorizationHeaderFilter # 필터 처리
+#        - id: catalog-service # Catalog Service 포워드
+#          uri: lb://CATALOG-SERVICE
+#          predicates:
+#            - Path=/catalog-service/**
+#        - id: order-service # Order Service 포워드
+#          uri: lb://ORDER-SERVICE
+#          predicates:
+#            - Path=/order-service/**
