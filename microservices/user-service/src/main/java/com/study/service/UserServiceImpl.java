@@ -18,17 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserDto createUser(UserDto userDto) {

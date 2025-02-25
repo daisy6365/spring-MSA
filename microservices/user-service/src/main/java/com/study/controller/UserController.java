@@ -22,8 +22,9 @@ import java.util.List;
 @RequestMapping("/user-service")
 public class UserController {
 
-    // 인스턴스 생성
+    // 인스턴스 생성 // yml파일에 존재하는 정보를 읽어옴
     private final Environment env;
+    // yml파일에 존재하는 정보를 읽어옴 @Value로 대체 가능
     private final Greeting greeting;
     private final UserService userService;
 
@@ -40,9 +41,12 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser request){
+        // Json 형태로 Client가 요청 정보를 전달
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
+        // 비지니스 로직 수행 하면서 UserDto로 전환
+        // 곧바로 DB에 반영하기 위해 UserEntity은로 전환 후 insert
         UserDto userDto = modelMapper.map(request, UserDto.class);
         userService.createUser(userDto);
 

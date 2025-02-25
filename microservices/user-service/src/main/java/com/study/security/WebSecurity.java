@@ -21,7 +21,6 @@ import org.springframework.security.web.util.matcher.IpAddressMatcher;
 @RequiredArgsConstructor
 public class WebSecurity {
 
-    private final Environment env;
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ObjectPostProcessor<Object> objectPostProcessor;
