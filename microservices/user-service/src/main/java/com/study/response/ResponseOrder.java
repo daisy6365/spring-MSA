@@ -1,6 +1,5 @@
 package com.study.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.Date;

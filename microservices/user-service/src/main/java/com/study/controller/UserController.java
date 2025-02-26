@@ -19,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+// API gateway와 URI 조건을 맞춰줘야 함.
 @RequestMapping("/user-service")
 public class UserController {
 
@@ -42,6 +43,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser request){
         // Json 형태로 Client가 요청 정보를 전달
+        // ModelMapper 매핑 전략 -> 일치해야 함
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 

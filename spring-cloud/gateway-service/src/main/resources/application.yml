@@ -29,6 +29,8 @@ spring:
         - id: user-service # User Service 포워드
           uri: lb://USER-SERVICE # 요청이 조건에 따라 "이동 예정인" 주소
           predicates:
+            # 해당 URI로 들어오면 포워딩이 됨.
+            # 하지만, UserController 또한!! /user-service 로 설정해서 구현해야 함
             - Path=/user-service/**
           filters:
 #            - AddRequestHeader=user-request, user-request-header
