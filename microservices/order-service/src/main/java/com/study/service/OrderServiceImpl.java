@@ -4,6 +4,7 @@ import com.study.domain.OrderEntity;
 import com.study.domain.OrderRepository;
 import com.study.dto.OrderDto;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -12,15 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-@Data
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepository;
-
-    public OrderServiceImpl(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
 
     @Override
     public OrderDto createOrder(OrderDto request) {

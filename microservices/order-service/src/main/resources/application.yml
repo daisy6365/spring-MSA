@@ -1,5 +1,5 @@
 server:
-  port: 0 # random port를 사용한다는 의미 -> port의 충돌 X
+  port: 9099 # random port를 사용한다는 의미 -> port의 충돌 X
 
 spring:
   application:
@@ -20,7 +20,7 @@ spring:
         #        show_sql: false
         format_sql: true
     open-in-view: false
-    #    generate-ddl: true
+    generate-ddl: true
   # H2 Database
 #  h2:
 #    console:
@@ -35,17 +35,14 @@ spring:
 
 eureka:
   instance:
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
   client:
     register-with-eureka: true # 유레카 등록
     fetch-registry: true # 외부에서 검색 가능 -> eureka 서버로부터 인스턴스의 정보를 주기적으로 가져올것인지 설정
     service-url: #유레카 서버의 위치
       defaultZone: http://127.0.0.1:8761/eureka
 
-#greeting체크 추가
-greeting:
-  message: Welcome to the Simple E-commerce.
-
 logging:
   level:
     org.hibernate.SQL: debug
+    com.study: debug

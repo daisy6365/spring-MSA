@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order-service/")
+@RequestMapping("/order-service")
 @RequiredArgsConstructor
 public class OrderController {
     private final Environment env;
@@ -41,6 +41,17 @@ public class OrderController {
         ResponseOrder responseOrder = modelMapper.map(result, ResponseOrder.class);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<ResponseOrder> getOrder(@PathVariable("orderId") String orderId){
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        OrderDto result = orderService.getOrderByOrderId(orderId);
+        ResponseOrder responseOrder = modelMapper.map(result, ResponseOrder.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseOrder);
     }
 
     // 사용자가 주문한 상품 리스트 조회
