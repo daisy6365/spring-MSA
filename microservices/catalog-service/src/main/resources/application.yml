@@ -1,5 +1,5 @@
 server:
-  port: 0 # random port? ????? ?? -> port? ?? X
+  port: 8082 # 0으로 설정하면 random port를 사용한다는 의미 -> port의 충돌 X
 
 spring:
   application:
@@ -12,8 +12,8 @@ spring:
   jpa:
     #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create-drop
-      #update -> ???????? #none -> ????(????)
+      ddl-auto: create-drop # 서비스 실행 시, 데이터를 자동으로 등록
+      # update -> 삭제안하고싶을때 #none -> 배포시에(운영환경)
     properties:
       hibernate:
         default_batch_fetch_size: 500
@@ -28,16 +28,12 @@ spring:
       mode: always
 eureka:
   instance:
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
   client:
-    register-with-eureka: true # ??? ??
-    fetch-registry: true # ???? ?? ?? -> eureka ????? ????? ??? ????? ?????? ??
-    service-url: #??? ??? ??
+    register-with-eureka: true # 유레카 등록
+    fetch-registry: true # 외부에서 검색 가능 -> eureka 서버로부터 인스턴스의 정보를 주기적으로 가져올것인지 설정
+    service-url: #유레카 서버의 위치
       defaultZone: http://127.0.0.1:8761/eureka
-
-#greeting?? ??
-greeting:
-  message: Welcome to the Simple E-commerce.
 
 logging:
   level:

@@ -4,6 +4,7 @@ package com.study.controller;
 import com.study.domain.CatalogEntity;
 import com.study.response.ResponseCatalog;
 import com.study.service.CatalogService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -16,15 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/catalog-service")
 public class CatalogController {
-    Environment env;
-    CatalogService catalogService;
-
-    public CatalogController(Environment env, CatalogService catalogService) {
-        this.env = env;
-        this.catalogService = catalogService;
-    }
+    private final Environment env;
+    private final CatalogService catalogService;
 
     @GetMapping("/health_check")
     public String status(){
@@ -34,7 +31,7 @@ public class CatalogController {
 
     // 전체조회
     @GetMapping("/catalogs")
-    public ResponseEntity<List<ResponseCatalog>> getUsers(){
+    public ResponseEntity<List<ResponseCatalog>> getAllCatalogs(){
         Iterable<CatalogEntity> catalogList = catalogService.getAllCatalogs();
 
         List<ResponseCatalog> result = new ArrayList<>();
