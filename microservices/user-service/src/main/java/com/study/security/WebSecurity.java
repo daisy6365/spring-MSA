@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.IpAddressMatcher;
@@ -25,7 +27,7 @@ public class WebSecurity {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ObjectPostProcessor<Object> objectPostProcessor;
 
-    private static final String[] WHITE_LIST = {
+    private static final String[] PERMIT_ALL_URL = {
             "/users/**",
             "/",
             "/**"
@@ -35,20 +37,21 @@ public class WebSecurity {
     // Bean에 등록하여 사용
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+        http.csrf(AbstractHttpConfigurer::disable);
         http.csrf().disable();
-        http.authorizeHttpRequests(authorize -> {
-                    try {
-                        authorize
-                                .requestMatchers(WHITE_LIST).permitAll()
-                                .requestMatchers(new IpAddressMatcher("127.0.0.1")).permitAll()
-                                .and()
-                                .addFilter(getAuthenticationFilter());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
-        http.headers().frameOptions().disable();
+        http.authorizeHttpRequests(request ->
+        {
+            try {
+                request.requestMatchers(PERMIT_ALL_URL).permitAll() // 얘는 제외
+                        .requestMatchers(new IpAddressMatcher("127.0.0.1")).authenticated() // 로컬요청 별도 인증
+                        .and()
+                        .addFilter(getAuthenticationFilter());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
 
         return http.build();
     }

@@ -21,7 +21,22 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         try {
             RequestLogin creds = new ObjectMapper().readValue(request.getInputStream(), RequestLogin.class);
 
-            return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
+            /**
+             * new UsernamePasswordAuthenticationToken
+             * email, password 를 spring security 내에서 인증객체로 이해할 수 있도록 변환해야함
+             *
+             * new ArrayList<>()
+             * 어떤 권한들을 가질 것인지
+             *
+             *
+             */
+            return getAuthenticationManager().authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            creds.getEmail(),
+                            creds.getPassword(),
+                            new ArrayList<>()
+                    )
+            );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

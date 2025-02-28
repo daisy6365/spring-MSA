@@ -7,7 +7,6 @@ import com.study.response.ResponseOrder;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
@@ -69,6 +68,9 @@ public class UserServiceImpl implements UserService{
         if (userEntity == null){
             throw new UsernameNotFoundException(username);
         }
-        return new User(userEntity.getEmail(), userEntity.getEncryptePwd(), true, true, true, true, new ArrayList<>());
+        return new User(userEntity.getEmail(), userEntity.getEncryptePwd(),
+                true, true, true,
+                true, new ArrayList<>());
     }
 }
+
