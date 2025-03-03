@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 // API gateway와 URI 조건을 맞춰줘야 함.
-@RequestMapping("/user-service")
+@RequestMapping("/")
 public class UserController {
 
     // 인스턴스 생성 // yml파일에 존재하는 정보를 읽어옴

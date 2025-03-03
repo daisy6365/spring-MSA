@@ -26,21 +26,53 @@ spring:
             preLogger: true
             postLogger: true
       routes:
-        - id: user-service # User Service 포워드
-          uri: lb://USER-SERVICE # 요청이 조건에 따라 "이동 예정인" 주소
+        # 더 상세하게 user service routes 설정 하도록 함
+#        - id: user-service # User Service 포워드
+#          uri: lb://USER-SERVICE # 요청이 조건에 따라 "이동 예정인" 주소
+#          predicates:
+#            # 해당 URI로 들어오면 포워딩이 됨.
+#            # 하지만, UserController 또한!! /user-service 로 설정해서 구현해야 함
+#            - Path=/user-service/**
+#          filters:
+##            - AddRequestHeader=user-request, user-request-header
+##            - AddResponseHeader=user-reponse, user-response-header
+#            - CustomFilter
+#            - name: LoggingFilter # 추가적인 파라미터가 존재 -> name 지정
+#              args:
+#                baseMessage: Hi, I'm your logging
+#                preLogger: true
+#                postLogger: true
+        # login API
+        - id: user-service
+          uri: lb://USER-SERVICE
           predicates:
-            # 해당 URI로 들어오면 포워딩이 됨.
-            # 하지만, UserController 또한!! /user-service 로 설정해서 구현해야 함
-            - Path=/user-service/**
+            - Path=/user-service/login
+            - Method=POST
           filters:
-#            - AddRequestHeader=user-request, user-request-header
-#            - AddResponseHeader=user-reponse, user-response-header
-            - CustomFilter
-            - name: LoggingFilter # 추가적인 파라미터가 존재 -> name 지정
-              args:
-                baseMessage: Hi, I'm your logging
-                preLogger: true
-                postLogger: true
+            - RemoveRequestHeader=Cookie # post로 전달된 값은 매번 새롭게 받도록 초기화
+            # # 들어오는 경로 값 형태 변환 -> 이렇게 하면 controller @RequestMapping 값을 맞줘주지 않아도 됨
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+        # 회원가입 API
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+        # 그외 user API
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie # post로 전달된 값은 매번 새롭게 받도록 초기화
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment} # 들어오는 input 형태 변환
+
         - id: catalog-service # Catalog Service 포워드
           uri: lb://CATALOG-SERVICE
           predicates:
