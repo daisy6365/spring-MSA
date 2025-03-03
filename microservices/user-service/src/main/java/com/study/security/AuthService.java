@@ -2,7 +2,9 @@ package com.study.security;
 
 import com.study.domain.UserEntity;
 import com.study.domain.UserRepository;
+import com.study.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,5 +34,15 @@ public class AuthService implements UserDetailsService {
         return new User(userEntity.getEmail(), userEntity.getEncryptePwd(),
                 true, true, true,
                 true, new ArrayList<>());
+    }
+
+    public UserDto getUserDetailsByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if(userEntity == null){
+            throw new UsernameNotFoundException(email);
+        }
+
+        return new ModelMapper().map(userEntity, UserDto.class);
     }
 }

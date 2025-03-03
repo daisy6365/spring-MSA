@@ -4,6 +4,7 @@ package com.study.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,6 +21,7 @@ import org.springframework.security.web.util.matcher.IpAddressMatcher;
 @RequiredArgsConstructor
 public class WebSecurity {
 
+    private final Environment env;
     private final AuthService authService;
     private final ObjectPostProcessor<Object> objectPostProcessor;
 
@@ -67,9 +69,9 @@ public class WebSecurity {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
         AuthenticationManagerBuilder builder = new AuthenticationManagerBuilder(objectPostProcessor);
-        authenticationFilter.setAuthenticationManager(authenticationManager(builder));
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(builder), authService, env);
+//        authenticationFilter.setAuthenticationManager(authenticationManager(builder));
 
         return authenticationFilter;
     }

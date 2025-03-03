@@ -38,4 +38,5 @@ greeting:
 
 logging:
   level:
+    com.study: debug
     org.hibernate.SQL: debug
