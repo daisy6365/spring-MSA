@@ -28,7 +28,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
              * new ArrayList<>()
              * 어떤 권한들을 가질 것인지
              *
-             *
              */
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(

@@ -22,7 +22,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService{
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
-        userEntity.setEncryptePwd(passwordEncoder.encode(userDto.getPwd()));
+        userEntity.setEncryptePwd(bCryptPasswordEncoder.encode(userDto.getPwd()));
 
         userRepository.save(userEntity);
 
@@ -59,18 +59,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public Iterable<UserEntity> getUserByAll() {
         return userRepository.findAll();
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByEmail(username);
-
-        if (userEntity == null){
-            throw new UsernameNotFoundException(username);
-        }
-        return new User(userEntity.getEmail(), userEntity.getEncryptePwd(),
-                true, true, true,
-                true, new ArrayList<>());
     }
 }
 

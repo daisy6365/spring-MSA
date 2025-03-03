@@ -1,12 +1,9 @@
 package com.study.security;
 
 
-import com.study.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,8 +20,7 @@ import org.springframework.security.web.util.matcher.IpAddressMatcher;
 @RequiredArgsConstructor
 public class WebSecurity {
 
-    private final UserService userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthService authService;
     private final ObjectPostProcessor<Object> objectPostProcessor;
 
     private static final String[] PERMIT_ALL_URL = {
@@ -32,6 +28,15 @@ public class WebSecurity {
             "/",
             "/**"
     };
+
+    /**
+     * security 관련된 부분 한곳에 책임 분리
+     * create passwordEncoder Bean
+     */
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     // WebSecurityConfigurerAdapter, authorizeRequest() Deprecated됨
     // Bean에 등록하여 사용
@@ -57,7 +62,7 @@ public class WebSecurity {
     }
 
     public AuthenticationManager authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(authService).passwordEncoder(passwordEncoder());
         return auth.build();
     }
 
