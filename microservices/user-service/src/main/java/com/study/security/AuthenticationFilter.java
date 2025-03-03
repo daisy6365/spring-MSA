@@ -3,6 +3,8 @@ package com.study.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.dto.UserDto;
 import com.study.request.RequestLogin;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * AbstractAuthenticationProcessingFilter와 UsernamePasswordAuthenticationFilter의 차이점
@@ -82,6 +85,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         // super.successfulAuthentication(request, response, chain, authResult);
         String username = ((User) authResult.getPrincipal()).getUsername();
         UserDto userDetails = authService.getUserDetailsByEmail(username);
+
+        String token = JwtUtil.createToken(userDetails, env);
+
+        response.addHeader("token", token);
+        response.addHeader("userId", userDetails.getUserId());
+
 
         log.debug("Authentication successful, user info = {}", username);
     }
