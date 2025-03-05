@@ -1,8 +1,9 @@
 rootProject.name = 'spring-MSA'
 include 'spring-cloud:discovery-service'
+include 'spring-cloud:gateway-service'
+include 'spring-cloud:config-service'
 include 'microservices:user-service'
 include 'microservices:catalog-service'
 include 'microservices:order-service'
-include 'spring-cloud:gateway-service'
 findProject(':spring-cloud:gateway-service')?.name = 'gateway-service'
 
