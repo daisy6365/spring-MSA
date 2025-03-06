@@ -63,6 +63,16 @@ spring:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
 
+        # Actuator API
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
         # 그외 user API
         - id: user-service
           uri: lb://USER-SERVICE
@@ -72,7 +82,7 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie # post로 전달된 값은 매번 새롭게 받도록 초기화
             - RewritePath=/user-service/(?<segment>.*), /$\{segment} # 들어오는 input 형태 변환
-#            - AuthorizationHeaderFilter # 필터 처리
+            - AuthorizationHeaderFilter # 필터 처리
 
         - id: catalog-service # Catalog Service 포워드
           uri: lb://CATALOG-SERVICE
@@ -89,3 +99,10 @@ token:
   expiration_time: 86400000 # 24H
   secret: UW2F4eDcwlwxhXHwaT8hYs06dvDc6VvNx8S+Txx++LnIpmYg/N2o5vJ6u57jK3pOef6/KVjUMhil2IKcLy7TQg==
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httpexchanges
+  tracing:
+    enabled: true # 추적 활성화
