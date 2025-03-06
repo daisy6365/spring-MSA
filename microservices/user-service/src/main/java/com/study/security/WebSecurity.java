@@ -28,7 +28,8 @@ public class WebSecurity {
     private static final String[] PERMIT_ALL_URL = {
             "/users/**",
             "/",
-            "/**"
+            "/**",
+            "/actuator/**" // actuator api는 제외
     };
 
     /**
