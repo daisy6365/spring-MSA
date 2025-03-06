@@ -29,10 +29,23 @@ public class UserController {
     private final Greeting greeting;
     private final UserService userService;
 
+    /**
+     * before git commit
+     * It's Working in User Service, port(local.server.port)=8081, port(server.port)=8081, token secret=null, token expiration time=null
+     *
+     * After git commit
+     * It's Working in User Service, port(local.server.port)=8081, port(server.port)=8081,
+     * token secret=Wm7dP4x9vTgH3bM1Kq8XzJ2pRsY5LNv6aY43D254tVjC59874209qZfG7wM8523hBrTkN51252234Q134PxYVKH5Zd, token expiration time=86400000
+     */
     @GetMapping("/health_check")
-    public String status(){
-        // port 번호 알려줌
-        return String.format("It's Working in User Service on PORT %s", env.getProperty("local.server.port"));
+    public String status() {
+        return String.format("It's Working in User Service"
+                //
+                + ", port(local.server.port)="+ env.getProperty("local.server.port")
+                // application.yml 에 저장된 정보들
+                + ", port(server.port)="+ env.getProperty("server.port")
+                + ", token secret="+ env.getProperty("token.secret")
+                + ", token expiration time="+ env.getProperty("token.expiration_time"));
     }
 
     @GetMapping("/welcome")

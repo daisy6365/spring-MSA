@@ -41,8 +41,8 @@ logging:
     com.study: debug
     org.hibernate.SQL: debug
 
-token:
-  expiration_time: 86400000 # 24H
-  secret: UW2F4eDcwlwxhXHwaT8hYs06dvDc6VvNx8S+Txx++LnIpmYg/N2o5vJ6u57jK3pOef6/KVjUMhil2IKcLy7TQg==
+#token:
+#  expiration_time: 86400000 # 24H
+#  secret: UW2F4eDcwlwxhXHwaT8hYs06dvDc6VvNx8S+Txx++LnIpmYg/N2o5vJ6u57jK3pOef6/KVjUMhil2IKcLy7TQg==
 
 # eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZjlhNjc5My0zMDZlLTRhZmUtOWNlYS0zMTlmMjQzYTEzMTUiLCJleHAiOjE3NDEwOTA5NDR9.jQ2rMVveuFJ1loo0XuRnmrUAwgqFjhQNzd03zVOn8pmrM4CM6RsrDKBn0yGzZi0ftqRqorC7Qd8wSDEx5l75tQ
