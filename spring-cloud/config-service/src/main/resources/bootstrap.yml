@@ -1,0 +1,6 @@
+encrypt: # 암호화 키
+#  key: abcdefghijklmnopqrstuvwxyz0123456789
+  key-store:
+    location: file:/Users/handabin/Desktop/apiEncryptionKey.jks  # 키 위치
+    password: 1q2w3e4r
+    alias: apiEncryptionKey # 키별칭
