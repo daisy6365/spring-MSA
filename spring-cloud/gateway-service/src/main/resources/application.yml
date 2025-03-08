@@ -103,6 +103,6 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, httpexchanges
+        include: refresh, health, beans, httpexchanges, busrefresh
   tracing:
     enabled: true # 추적 활성화

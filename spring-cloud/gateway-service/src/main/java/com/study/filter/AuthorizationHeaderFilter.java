@@ -45,6 +45,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
+            log.info("test spring cloud bus = {}", env.getProperty("token.secret"));
             ServerHttpRequest request = exchange.getRequest();
 
             // Header에 인증 값이 존재하는지 확인

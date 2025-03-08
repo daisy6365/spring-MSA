@@ -51,7 +51,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans # 특정 End point만 활성화
+        include: refresh, health, beans, busrefresh # 특정 End point만 활성화
 #        exclude: env -> 제외
 
 #token:
