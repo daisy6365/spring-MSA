@@ -7,11 +7,16 @@ import com.study.response.ResponseOrder;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +27,8 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final Environment env;
+    private final RestTemplate restTemplate;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -42,14 +49,19 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto getUserByUserId(String userId) {
         UserEntity user = userRepository.findByUserId(userId);
-
         if(user == null){
             throw new UsernameNotFoundException("User not found");
         }
-
         UserDto userDto = new ModelMapper().map(user, UserDto.class);
 
-        List<ResponseOrder> orderList = new ArrayList<>();
+
+        /* Using as RestTemplate */
+        // order url의 주소를 yml로 부터 가져옴
+        String orderUrl = String.format(env.getProperty("order_service.url"), userId);
+        ResponseEntity<List<ResponseOrder>> response = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<ResponseOrder>>() {});
+
+        List<ResponseOrder> orderList = response.getBody();
         userDto.setOrderList(orderList);
 
         return userDto;
