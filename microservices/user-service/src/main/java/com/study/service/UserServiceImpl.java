@@ -1,5 +1,6 @@
 package com.study.service;
 
+import com.study.client.OrderServiceClient;
 import com.study.domain.UserEntity;
 import com.study.domain.UserRepository;
 import com.study.dto.UserDto;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final Environment env;
     private final RestTemplate restTemplate;
+    private final OrderServiceClient orderServiceClient;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -55,13 +57,17 @@ public class UserServiceImpl implements UserService{
         UserDto userDto = new ModelMapper().map(user, UserDto.class);
 
 
-        /* Using as RestTemplate */
+        /* Using as RestTemplate
         // order url의 주소를 yml로 부터 가져옴
         String orderUrl = String.format(env.getProperty("order_service.url"), userId);
         ResponseEntity<List<ResponseOrder>> response = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<ResponseOrder>>() {});
 
         List<ResponseOrder> orderList = response.getBody();
+        userDto.setOrderList(orderList); */
+
+        /* User as Feign client */
+        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
         userDto.setOrderList(orderList);
 
         return userDto;

@@ -3,8 +3,7 @@ package com.study;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * EnableEurekaServer? VS EnableDiscoveryClient?
@@ -21,6 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 // Eureka 서버와 연결되는 Client
 // 자신의 위치 정보를 Eureka 서버에 등록하고, 다른 서비스의 위치를 조회할 클라이언트에 선언
 @EnableDiscoveryClient
+/**
+ * EnableFeignClients : Auto-Configuration 기반 동작
+ * openfeign 의존성을 추가하면 자동으로 FeignAutoConfiguration 등록
+ * -> 관련 설정 구성됨
+ * 내부적으로 FeignClientsRegistrar가 동작
+ */
+@EnableFeignClients
 public class UserServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserServiceApplication.class, args);
