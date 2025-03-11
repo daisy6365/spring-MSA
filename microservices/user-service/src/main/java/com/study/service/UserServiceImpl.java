@@ -69,14 +69,18 @@ public class UserServiceImpl implements UserService{
         List<ResponseOrder> orderList = response.getBody();
         userDto.setOrderList(orderList); */
 
-        /* User as Feign client */
-        List<ResponseOrder> orderList = new ArrayList<>();
-        try {
-            orderList = orderServiceClient.getOrdersError(userId);
-        }
-        catch (FeignException e){
-            log.debug(e.getMessage());
-        }
+        /* Using as Feign client */
+//        List<ResponseOrder> orderList = new ArrayList<>();
+//        try {
+//            orderList = orderServiceClient.getOrdersError(userId);
+//        }
+//        catch (FeignException e){
+//            log.debug(e.getMessage());
+//        }
+
+        /* Using ErrorDecoder */
+        // try-catch문을 사용해 예외를 처리할 필요가 없음
+        List<ResponseOrder> orderList = orderServiceClient.getOrdersError(userId);
         userDto.setOrderList(orderList);
 
         return userDto;

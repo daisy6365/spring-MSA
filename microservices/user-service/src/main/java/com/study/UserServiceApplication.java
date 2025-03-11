@@ -1,6 +1,8 @@
 package com.study;
 
+import com.study.error.FeignErrorDecoder;
 import feign.Logger;
+import feign.codec.ErrorDecoder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -43,7 +45,6 @@ public class UserServiceApplication {
     public Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
     }
-
 }
 
 
