@@ -1,9 +1,11 @@
 package com.study;
 
+import feign.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 
 /**
  * EnableEurekaServer? VS EnableDiscoveryClient?
@@ -30,6 +32,16 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class UserServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserServiceApplication.class, args);
+    }
+
+    /**
+     * Feign Client는 로그를 남기지 않음.
+     * 이를 활성화 하기 위해 LoggerLevel 설정
+     * - NONE, BASIC, HEADERS, FULL(+ body 본문까지 포함)
+     */
+    @Bean
+    public Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
     }
 
 }

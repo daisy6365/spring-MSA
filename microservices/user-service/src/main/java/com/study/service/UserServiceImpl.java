@@ -5,7 +5,9 @@ import com.study.domain.UserEntity;
 import com.study.domain.UserRepository;
 import com.study.dto.UserDto;
 import com.study.response.ResponseOrder;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.ParameterizedTypeReference;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -67,7 +70,13 @@ public class UserServiceImpl implements UserService{
         userDto.setOrderList(orderList); */
 
         /* User as Feign client */
-        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
+        List<ResponseOrder> orderList = new ArrayList<>();
+        try {
+            orderList = orderServiceClient.getOrdersError(userId);
+        }
+        catch (FeignException e){
+            log.debug(e.getMessage());
+        }
         userDto.setOrderList(orderList);
 
         return userDto;
