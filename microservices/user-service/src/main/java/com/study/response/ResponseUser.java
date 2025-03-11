@@ -14,5 +14,5 @@ public class ResponseUser {
     private String userId;
 
     // 사용자가 주문했던 주문내역 list
-    private List<ResponseOrder> orders;
+    private List<ResponseOrder> orderList;
 }
