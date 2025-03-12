@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService{
 
         /* Using ErrorDecoder */
         // try-catch문을 사용해 예외를 처리할 필요가 없음
-        List<ResponseOrder> orderList = orderServiceClient.getOrdersError(userId);
+        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
         userDto.setOrderList(orderList);
 
         return userDto;
