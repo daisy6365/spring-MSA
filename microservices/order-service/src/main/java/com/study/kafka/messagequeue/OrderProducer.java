@@ -31,6 +31,13 @@ public class OrderProducer {
 
     Schema schema = Schema.from("struct", fieldList, false, "orders");
 
+    /**
+     * OrderService로 부터 요청된 주문정보를 "OrderService의 DB"에 바로 전송 X
+     * -> Kafka Topic에 전송
+     *
+     * Kafka Topic에 설정된 Kafka Sink connector를 통해
+     * 단일 DB에 저장 및 데이터 동기화
+     */
     public OrderDto send(String topic, OrderDto order) {
         Payload payload = Payload.from(
                 order.getOrderId(),
