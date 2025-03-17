@@ -25,7 +25,7 @@ public class KafkaProducer {
         try {
             jsonInString = mapper.writeValueAsString(orderDto);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         kafkaTemplate.send(topic, jsonInString);
