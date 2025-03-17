@@ -42,16 +42,18 @@ public class OrderController {
         OrderDto orderDto = modelMapper.map(request, OrderDto.class);
         orderDto.setUserId(userId);
 
-//        OrderDto result = orderService.createOrder(orderDto);
+        OrderDto result = orderService.createOrder(orderDto);
 //        ResponseOrder responseOrder = modelMapper.map(result, ResponseOrder.class);
 
         /* kafka */
-        orderDto.setOrderId(UUID.randomUUID().toString());
-        orderDto.setTotalPrice(request.getQty() * request.getUnitPrice());
+//        orderDto.setOrderId(result.getOrderId());
+//        orderDto.setTotalPrice(result.getTotalPrice());
 
         /* send this order data to the kafka */
+        // 여러개의 서비스 구동중 일때, 데이터 분산 저장 -> 독립적인 데이터베이스를 가짐
+        // -> 데이터 동기화에 대한 문제 발생 -> kafka message server를 통해 해결
         kafkaProducer.send("example-catalog-topic", orderDto);
-        orderProducer.send("orders", orderDto);
+//        orderProducer.send("orders", orderDto);
 
         ResponseOrder responseOrder = modelMapper.map(orderDto, ResponseOrder.class);
 

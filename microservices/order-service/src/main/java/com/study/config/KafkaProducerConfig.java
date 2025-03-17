@@ -27,6 +27,9 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(properties);
     }
 
+    /**
+     * 데이터 전달 인스턴스
+     */
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate() {
         // Producer 설정을 KafkaTemplate에 등록
