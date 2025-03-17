@@ -3,6 +3,7 @@ package com.study.service;
 import com.study.domain.OrderEntity;
 import com.study.domain.OrderRepository;
 import com.study.dto.OrderDto;
+import com.study.kafka.KafkaProducer;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepository;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public OrderDto createOrder(OrderDto request) {
@@ -31,6 +33,9 @@ public class OrderServiceImpl implements OrderService{
         orderRepository.save(orderEntity);
 
         OrderDto result = modelMapper.map(orderEntity, OrderDto.class);
+
+        /* send this order data to the kafka */
+        kafkaProducer.send("example-catalog-topic", result);
 
         return result;
     }
