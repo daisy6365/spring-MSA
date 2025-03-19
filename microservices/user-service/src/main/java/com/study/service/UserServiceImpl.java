@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -35,6 +37,7 @@ public class UserServiceImpl implements UserService{
     private final RestTemplate restTemplate;
     private final OrderServiceClient orderServiceClient;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -78,9 +81,15 @@ public class UserServiceImpl implements UserService{
 //            log.debug(e.getMessage());
 //        }
 
+        /* CircuitBreaker */
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+        List<ResponseOrder> orderList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId),
+                // 문제가 발생했을 시?, 빈 ArrayList 던짐
+                throwable -> new ArrayList<>());
+
         /* Using ErrorDecoder */
         // try-catch문을 사용해 예외를 처리할 필요가 없음
-        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
+//        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
         userDto.setOrderList(orderList);
 
         return userDto;

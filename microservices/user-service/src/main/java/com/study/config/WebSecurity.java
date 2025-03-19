@@ -1,6 +1,8 @@
-package com.study.security;
+package com.study.config;
 
 
+import com.study.security.AuthService;
+import com.study.security.AuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
