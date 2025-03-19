@@ -8,6 +8,7 @@ import com.study.request.RequestOrder;
 import com.study.response.ResponseOrder;
 import com.study.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/order-service")
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class OrderController {
 
     @PostMapping("/{userId}/orders")
     public ResponseEntity<ResponseOrder> createOrder(@PathVariable("userId") String userId, @RequestBody RequestOrder request){
+        log.info("Start creating order for user id {}", userId);
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -56,7 +59,7 @@ public class OrderController {
 //        orderProducer.send("orders", orderDto);
 
 //        ResponseOrder responseOrder = modelMapper.map(orderDto, ResponseOrder.class);
-
+        log.info("End creating orders data");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
 
@@ -74,6 +77,7 @@ public class OrderController {
     // 사용자가 주문한 상품 리스트 조회
     @GetMapping("/{userId}/orders")
     public ResponseEntity<List<ResponseOrder>> getOrders(@PathVariable("userId") String userId){
+        log.info("Start get orders for user id {}", userId);
         Iterable<OrderEntity> orderEntities = orderService.getOrderByUserId(userId);
 
         List<ResponseOrder> result = new ArrayList<>();
@@ -81,6 +85,7 @@ public class OrderController {
             result.add(new ModelMapper().map(v, ResponseOrder.class));
         });
 
+        log.info("End get orders data");
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

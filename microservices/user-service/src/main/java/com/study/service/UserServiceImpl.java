@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService{
     // 한명 조회
     @Override
     public UserDto getUserByUserId(String userId) {
+        log.info("UserService getUserByUserId() start. input = {}", userId);
         UserEntity user = userRepository.findByUserId(userId);
         if(user == null){
             throw new UsernameNotFoundException("User not found");
@@ -81,11 +82,13 @@ public class UserServiceImpl implements UserService{
 //            log.debug(e.getMessage());
 //        }
 
+        log.info("Before call orders microservice");
         /* CircuitBreaker */
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
         List<ResponseOrder> orderList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId),
                 // 문제가 발생했을 시?, 빈 ArrayList 던짐
                 throwable -> new ArrayList<>());
+        log.info("After call orders microservice");
 
         /* Using ErrorDecoder */
         // try-catch문을 사용해 예외를 처리할 필요가 없음

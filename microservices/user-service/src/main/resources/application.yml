@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: user-service
+  zipkin:
+    base-url: http://localhost:9411
+    enabled: true
+
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/msa-user?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&autoReconnect=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Seoul
@@ -42,20 +46,25 @@ greeting:
   message: Welcome to the Simple E-commerce.
 
 logging:
+  pattern:
+    level: "%5p [%X{traceId:-},%X{spanId:-}]"
   level:
-    com.study: debug
+    com.study.service: debug
     org.hibernate.SQL: debug
-
 # Web End point 노출 범위를 설정
+
 management:
+  tracing:
+    sampling:
+      probability: 1.0 # 로그 정보를 zipkin 서버에 전달할 횟수 -> 100%
+    propagation:
+      consume: B3
+      produce: B3_MULTI
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, busrefresh # 특정 End point만 활성화
-#        exclude: env -> 제외
-
-#token:
-#  expiration_time: 86400000 # 24H
-#  secret: UW2F4eDcwlwxhXHwaT8hYs06dvDc6VvNx8S+Txx++LnIpmYg/N2o5vJ6u57jK3pOef6/KVjUMhil2IKcLy7TQg==
-
-# eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZjlhNjc5My0zMDZlLTRhZmUtOWNlYS0zMTlmMjQzYTEzMTUiLCJleHAiOjE3NDEwOTA5NDR9.jQ2rMVveuFJ1loo0XuRnmrUAwgqFjhQNzd03zVOn8pmrM4CM6RsrDKBn0yGzZi0ftqRqorC7Qd8wSDEx5l75tQ
+        # 특정 End point만 활성화
+        include: refresh, health, beans, busrefresh, info, metrics, prometheus
