@@ -37,6 +37,9 @@ public class OrderProducer {
      *
      * Kafka Topic에 설정된 Kafka Sink connector를 통해
      * 단일 DB에 저장 및 데이터 동기화
+     *
+     * KafkaTemplate.send를 통해
+     * Topic Key Value를 지정하여 비동기 전송
      */
     public OrderDto send(String topic, OrderDto order) {
         Payload payload = Payload.from(
@@ -58,6 +61,11 @@ public class OrderProducer {
             e.printStackTrace();
         }
 
+        /**
+         * send의 return type ===> CompletableFuture<SendResult<K, V>>
+         * 성공 -> 메타데이터 확인 가능
+         * 실패 -> 예외처리 / retry / logging 로직으로 연결
+         */
         kafkaTemplate.send(topic, jsonInString);
         log.info("Order Producer sent data from the Order microservice = {}", topic);
 
