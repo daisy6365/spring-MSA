@@ -5,7 +5,10 @@ server:
 spring:
   application:
     name: discovery-service
-
+  cloud:
+    config:
+      uri: http//127.0.0.1:8888
+      name: ecommerce
 # 자기 자신은 유레카 서버에 등록 X -> 자기 자신이 유레카 서버(service discovery)이기 때문에
 eureka:
   client:
