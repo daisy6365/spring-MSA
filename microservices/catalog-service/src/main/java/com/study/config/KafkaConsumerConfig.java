@@ -2,6 +2,7 @@ package com.study.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -15,12 +16,15 @@ import java.util.Map;
 @EnableKafka // kafka에서 사용 할 수 있도록
 @Configuration
 public class KafkaConsumerConfig {
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServer;
+
     // 접속할 수 있는 Consumer 설정
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> properties = new HashMap<>();
         // bootstrap servers
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         // group id consumer들을 그룹화할 수 있음
         // -> 대규모 데이터를 병렬적으로 처리
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, "consumerGroupId");

@@ -26,6 +26,8 @@ spring:
   sql:
     init:
       mode: always
+  kafka:
+    bootstrap-servers: kafka:9092
 eureka:
   instance:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
